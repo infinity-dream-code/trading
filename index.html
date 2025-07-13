@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
+     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -114,56 +114,76 @@
         }
     </style>
 </head>
-<body>
-    <div class="container-fluid p-3">
-        <div class="main-container">
-            <div class="header">
-                <h1 class="display-4 fw-bold mb-3">📈 Trade Management</h1>
+<body class="bg-light">
+    <div class="container-fluid py-4">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center py-4">
+                <h1 class="display-4 fw-bold mb-2">📈 Trade Management</h1>
                 <p class="lead mb-0">Kelola dan analisis investasi trading Anda dengan lebih baik</p>
             </div>
 
-            <div class="p-4">
+            <div class="card-body p-4">
                 <!-- Statistics Section -->
                 <div class="row mb-4">
                     <div class="col-md-3 mb-3">
-                        <div class="card stat-card h-100">
+                        <div class="card bg-light border-0 h-100">
                             <div class="card-body text-center">
-                                <div class="stat-number" id="total-trades">0</div>
-                                <div class="stat-label">Total Trades</div>
+                                <div class="fs-2 fw-bold text-primary" id="total-trades">0</div>
+                                <div class="text-muted small text-uppercase">Total Trades</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stat-card h-100">
+                        <div class="card bg-light border-0 h-100">
                             <div class="card-body text-center">
-                                <div class="stat-number" id="avg-return">0%</div>
-                                <div class="stat-label">Rata-rata Return</div>
+                                <div class="fs-2 fw-bold" id="avg-return">0%</div>
+                                <div class="text-muted small text-uppercase">Rata-rata Return</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stat-card h-100">
+                        <div class="card bg-light border-0 h-100">
                             <div class="card-body text-center">
-                                <div class="stat-number" id="total-return">0%</div>
-                                <div class="stat-label">Total Return</div>
+                                <div class="fs-2 fw-bold" id="total-return">0%</div>
+                                <div class="text-muted small text-uppercase">Total Return</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stat-card h-100">
+                        <div class="card bg-light border-0 h-100">
                             <div class="card-body text-center">
-                                <div class="stat-number" id="current-page">1</div>
-                                <div class="stat-label">Halaman</div>
+                                <div class="fs-2 fw-bold text-primary" id="current-page">1</div>
+                                <div class="text-muted small text-uppercase">Halaman</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Add Button -->
-                <div class="d-flex justify-content-end mb-4">
-                    <a href="tambah.html" class="btn btn-gradient btn-lg">
-                        <i class="fas fa-plus me-2"></i>TAMBAH
-                    </a>
+                <!-- Search and Add Button -->
+                <div class="row mb-4">
+                    <div class="col-md-8 mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-primary text-white">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="search-input" placeholder="Cari berdasarkan nama investasi atau jenis investasi...">
+                            <button class="btn btn-outline-secondary" id="clear-search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted">Pencarian realtime - ketik untuk mencari</small>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="tambah.html" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-plus me-2"></i>TAMBAH
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Search Results Info -->
+                <div id="search-info" class="alert alert-info d-none" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span id="search-text"></span>
                 </div>
 
                 <!-- Error Container -->
@@ -171,17 +191,17 @@
                 
                 <!-- Loading -->
                 <div id="loading" class="text-center py-5">
-                    <div class="spinner-border mb-3" role="status">
+                    <div class="spinner-border text-primary mb-3" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     <p class="text-muted">Memuat data trading...</p>
                 </div>
 
                 <!-- Table -->
-                <div class="table-container" id="table-container" style="display: none;">
+                <div class="card" id="table-container" style="display: none;">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0" id="trade-table">
-                            <thead>
+                            <thead class="table-light">
                                 <tr>
                                     <th>No</th>
                                     <th>Tipe Investasi</th>
@@ -201,9 +221,18 @@
                 <div id="empty-state" class="text-center py-5" style="display: none;">
                     <h3 class="text-muted mb-3">Belum ada data trading</h3>
                     <p class="text-muted mb-4">Mulai dengan menambahkan trading pertama Anda</p>
-                    <a href="tambah.html" class="btn btn-gradient btn-lg">
+                    <a href="tambah.html" class="btn btn-primary btn-lg">
                         <i class="fas fa-plus me-2"></i>Tambah Trading Baru
                     </a>
+                </div>
+
+                <!-- No Search Results -->
+                <div id="no-results" class="text-center py-5" style="display: none;">
+                    <h3 class="text-muted mb-3">Tidak ada hasil pencarian</h3>
+                    <p class="text-muted mb-4">Coba kata kunci yang berbeda</p>
+                    <button class="btn btn-outline-primary" id="reset-search">
+                        <i class="fas fa-refresh me-2"></i>Reset Pencarian
+                    </button>
                 </div>
 
                 <!-- Pagination -->
@@ -227,7 +256,7 @@
     <div class="modal fade" id="detail-modal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title">Detail Trading</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -250,6 +279,9 @@
         let tradesPerPage = 40;
         let totalPages = 0;
         let detailModal;
+        let searchQuery = '';
+        let searchTimeout;
+        let isSearching = false;
         
         // Initialize Supabase with error handling
         function initializeSupabase() {
@@ -292,13 +324,13 @@
 
         // Get badge class based on investment type
         function getBadgeClass(type) {
-            if (!type) return 'badge-default';
+            if (!type) return 'badge bg-secondary';
             
             const lowerType = type.toLowerCase();
-            if (lowerType.includes('saham')) return 'badge-saham';
-            if (lowerType.includes('crypto')) return 'badge-crypto';
-            if (lowerType.includes('forex')) return 'badge-forex';
-            return 'badge-default';
+            if (lowerType.includes('saham')) return 'badge bg-info';
+            if (lowerType.includes('crypto')) return 'badge bg-warning text-dark';
+            if (lowerType.includes('forex')) return 'badge bg-success';
+            return 'badge bg-secondary';
         }
 
         // Format currency
@@ -322,8 +354,8 @@
 
         // Get profit/loss class
         function getProfitClass(hasil) {
-            if (hasil === null || hasil === undefined) return 'neutral';
-            return hasil > 0 ? 'profit' : hasil < 0 ? 'loss' : 'neutral';
+            if (hasil === null || hasil === undefined) return 'text-muted';
+            return hasil > 0 ? 'text-success' : hasil < 0 ? 'text-danger' : 'text-muted';
         }
 
         // Format percentage
@@ -333,13 +365,16 @@
             return `${sign}${percent.toFixed(2)}%`;
         }
 
-        // Get statistics from all trades
-        async function getTradeStatistics() {
+        // Get statistics from all trades (or filtered trades)
+        async function getTradeStatistics(searchQuery = '') {
             try {
-                const { data, error } = await supabase
-                    .from('trade')
-                    .select('hasil');
+                let query = supabase.from('trade').select('hasil');
+                
+                if (searchQuery) {
+                    query = query.or(`nama_investasi.ilike.%${searchQuery}%,tipe_investasi.ilike.%${searchQuery}%`);
+                }
 
+                const { data, error } = await query;
                 if (error) throw error;
 
                 const results = data.map(trade => parseFloat(trade.hasil) || 0);
@@ -367,22 +402,37 @@
             
             const avgElement = document.getElementById('avg-return');
             avgElement.textContent = formatPercent(stats.avgReturn);
-            avgElement.className = `stat-number ${getProfitClass(stats.avgReturn)}`;
+            avgElement.className = `fs-2 fw-bold ${getProfitClass(stats.avgReturn)}`;
             
             const totalElement = document.getElementById('total-return');
             totalElement.textContent = formatPercent(stats.totalReturn);
-            totalElement.className = `stat-number ${getProfitClass(stats.totalReturn)}`;
+            totalElement.className = `fs-2 fw-bold ${getProfitClass(stats.totalReturn)}`;
         }
 
-        // Load trades data with pagination
-        async function loadTrades(page = 1) {
+        // Show/hide search info
+        function updateSearchInfo(query, count) {
+            const searchInfo = document.getElementById('search-info');
+            const searchText = document.getElementById('search-text');
+            
+            if (query) {
+                searchText.textContent = `Menampilkan ${count} hasil untuk "${query}"`;
+                searchInfo.classList.remove('d-none');
+            } else {
+                searchInfo.classList.add('d-none');
+            }
+        }
+
+        // Load trades data with pagination and search
+        async function loadTrades(page = 1, search = '') {
             try {
                 if (!supabase) {
                     throw new Error('Supabase belum diinisialisasi');
                 }
 
-                // Get statistics
-                const stats = await getTradeStatistics();
+                isSearching = !!search;
+                
+                // Get statistics (all or filtered)
+                const stats = await getTradeStatistics(search);
                 totalTrades = stats.totalTrades;
                 totalPages = Math.ceil(totalTrades / tradesPerPage);
 
@@ -390,31 +440,53 @@
                 updateStatistics(stats);
                 document.getElementById('current-page').textContent = page;
 
+                // Update search info
+                updateSearchInfo(search, totalTrades);
+
                 // Calculate offset
                 const offset = (page - 1) * tradesPerPage;
 
-                const { data, error } = await supabase
+                // Build query
+                let query = supabase
                     .from('trade')
                     .select('*')
                     .order('id', { ascending: false })
                     .range(offset, offset + tradesPerPage - 1);
 
+                // Add search filter if provided
+                if (search) {
+                    query = query.or(`nama_investasi.ilike.%${search}%,tipe_investasi.ilike.%${search}%`);
+                }
+
+                const { data, error } = await query;
                 if (error) throw error;
 
                 const loadingEl = document.getElementById('loading');
                 const tableContainerEl = document.getElementById('table-container');
                 const emptyEl = document.getElementById('empty-state');
+                const noResultsEl = document.getElementById('no-results');
                 const paginationEl = document.getElementById('pagination');
                 const tbodyEl = document.getElementById('trade-tbody');
 
                 loadingEl.style.display = 'none';
 
+                // Handle empty states
                 if (totalTrades === 0) {
-                    emptyEl.style.display = 'block';
+                    if (search) {
+                        noResultsEl.style.display = 'block';
+                        emptyEl.style.display = 'none';
+                    } else {
+                        emptyEl.style.display = 'block';
+                        noResultsEl.style.display = 'none';
+                    }
+                    tableContainerEl.style.display = 'none';
                     paginationEl.style.display = 'none';
                     return;
                 }
 
+                // Hide empty states and show table
+                emptyEl.style.display = 'none';
+                noResultsEl.style.display = 'none';
                 tableContainerEl.style.display = 'block';
                 tbodyEl.innerHTML = '';
 
@@ -423,14 +495,14 @@
                     const rowNumber = offset + index + 1;
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td class="fw-bold text-dark">${rowNumber}</td>
+                        <td class="fw-bold">${rowNumber}</td>
                         <td>
-                            <span class="badge ${getBadgeClass(trade.tipe_investasi)}">
+                            <span class="${getBadgeClass(trade.tipe_investasi)}">
                                 ${trade.tipe_investasi || '-'}
                             </span>
                         </td>
-                        <td class="fw-semibold text-dark">${trade.nama_investasi}</td>
-                        <td class="${getProfitClass(trade.hasil)}">
+                        <td class="fw-semibold">${trade.nama_investasi}</td>
+                        <td class="fw-bold ${getProfitClass(trade.hasil)}">
                             ${formatPercent(trade.hasil)}
                         </td>
                         <td>${formatDate(trade.tanggal_entry)}</td>
@@ -534,7 +606,7 @@
         // Go to specific page
         function goToPage(page) {
             currentPage = page;
-            loadTrades(page);
+            loadTrades(page, searchQuery);
         }
 
         // Show error message
@@ -567,114 +639,114 @@
                 modalBody.innerHTML = `
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Database ID</div>
-                                    <div class="detail-value">${data.id}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Database ID</h6>
+                                    <p class="card-text fw-bold">${data.id}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Tipe Investasi</div>
-                                    <div class="detail-value">
-                                        <span class="badge ${getBadgeClass(data.tipe_investasi)}">
+                                    <h6 class="card-title text-muted small text-uppercase">Tipe Investasi</h6>
+                                    <p class="card-text">
+                                        <span class="${getBadgeClass(data.tipe_investasi)}">
                                             ${data.tipe_investasi || '-'}
                                         </span>
-                                    </div>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Nama Investasi</div>
-                                    <div class="detail-value">${data.nama_investasi}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Nama Investasi</h6>
+                                    <p class="card-text fw-bold">${data.nama_investasi}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Sesuai Plan</div>
-                                    <div class="detail-value">
-                                        ${data.sesuai_plan === true ? '✅ Ya' : data.sesuai_plan === false ? '❌ Tidak' : '-'}
-                                    </div>
+                                    <h6 class="card-title text-muted small text-uppercase">Sesuai Plan</h6>
+                                    <p class="card-text">
+                                        ${data.sesuai_plan === true ? '<span class="text-success">✅ Ya</span>' : data.sesuai_plan === false ? '<span class="text-danger">❌ Tidak</span>' : '-'}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Tanggal Entry</div>
-                                    <div class="detail-value">${formatDate(data.tanggal_entry)}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Tanggal Entry</h6>
+                                    <p class="card-text">${formatDate(data.tanggal_entry)}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Harga Entry</div>
-                                    <div class="detail-value">${formatCurrency(data.harga_entry)}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Harga Entry</h6>
+                                    <p class="card-text fw-bold">${formatCurrency(data.harga_entry)}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Tanggal Exit</div>
-                                    <div class="detail-value">${formatDate(data.tanggal_exit)}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Tanggal Exit</h6>
+                                    <p class="card-text">${formatDate(data.tanggal_exit)}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card detail-item h-100">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Harga Jual</div>
-                                    <div class="detail-value">${formatCurrency(data.harga_jual)}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Harga Jual</h6>
+                                    <p class="card-text fw-bold">${formatCurrency(data.harga_jual)}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="card detail-item">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Hasil</div>
-                                    <div class="detail-value ${getProfitClass(data.hasil)}">
+                                    <h6 class="card-title text-muted small text-uppercase">Hasil</h6>
+                                    <p class="card-text fw-bold fs-4 ${getProfitClass(data.hasil)}">
                                         ${formatPercent(data.hasil)}
-                                    </div>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="card detail-item">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Alasan Masuk</div>
-                                    <div class="detail-value">${data.alasan_masuk || '-'}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Alasan Masuk</h6>
+                                    <p class="card-text">${data.alasan_masuk || '-'}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="card detail-item">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Alasan Keluar</div>
-                                    <div class="detail-value">${data.alasan_keluar || '-'}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Alasan Keluar</h6>
+                                    <p class="card-text">${data.alasan_keluar || '-'}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="card detail-item">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Pelajaran</div>
-                                    <div class="detail-value">${data.pelajaran || '-'}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Pelajaran</h6>
+                                    <p class="card-text">${data.pelajaran || '-'}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="card detail-item">
+                            <div class="card bg-light">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">Dibuat Pada</div>
-                                    <div class="detail-value">${formatDate(data.created_at)}</div>
+                                    <h6 class="card-title text-muted small text-uppercase">Dibuat Pada</h6>
+                                    <p class="card-text">${formatDate(data.created_at)}</p>
                                 </div>
                             </div>
                         </div>
@@ -689,12 +761,52 @@
             }
         }
 
+        // Handle search input
+        function handleSearch() {
+            const searchInput = document.getElementById('search-input');
+            const query = searchInput.value.trim();
+            
+            // Clear previous timeout
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+            
+            // Set new timeout for live search
+            searchTimeout = setTimeout(() => {
+                searchQuery = query;
+                currentPage = 1;
+                loadTrades(1, query);
+            }, 300); // 300ms delay for better UX
+        }
+
+        // Clear search
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            searchQuery = '';
+            currentPage = 1;
+            loadTrades(1, '');
+        }
+
+        // Initialize search event listeners
+        function initializeSearch() {
+            const searchInput = document.getElementById('search-input');
+            const clearBtn = document.getElementById('clear-search');
+            const resetBtn = document.getElementById('reset-search');
+
+            searchInput.addEventListener('input', handleSearch);
+            clearBtn.addEventListener('click', clearSearch);
+            resetBtn.addEventListener('click', clearSearch);
+        }
+
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('Page loaded, initializing...');
             
             // Initialize Bootstrap modal
             detailModal = new bootstrap.Modal(document.getElementById('detail-modal'));
+            
+            // Initialize search
+            initializeSearch();
             
             // Wait for Supabase to load
             await waitForSupabase();
