@@ -183,7 +183,7 @@
                         <table class="table table-hover mb-0" id="trade-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No</th>
                                     <th>Tipe Investasi</th>
                                     <th>Nama Investasi</th>
                                     <th>Hasil</th>
@@ -418,10 +418,12 @@
                 tableContainerEl.style.display = 'block';
                 tbodyEl.innerHTML = '';
 
-                data.forEach(trade => {
+                // Calculate row number based on current page
+                data.forEach((trade, index) => {
+                    const rowNumber = offset + index + 1;
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td class="fw-bold text-dark">${trade.id}</td>
+                        <td class="fw-bold text-dark">${rowNumber}</td>
                         <td>
                             <span class="badge ${getBadgeClass(trade.tipe_investasi)}">
                                 ${trade.tipe_investasi || '-'}
@@ -567,7 +569,7 @@
                         <div class="col-md-6">
                             <div class="card detail-item h-100">
                                 <div class="card-body">
-                                    <div class="detail-label mb-2">ID</div>
+                                    <div class="detail-label mb-2">Database ID</div>
                                     <div class="detail-value">${data.id}</div>
                                 </div>
                             </div>
@@ -649,6 +651,14 @@
                                 <div class="card-body">
                                     <div class="detail-label mb-2">Alasan Masuk</div>
                                     <div class="detail-value">${data.alasan_masuk || '-'}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card detail-item">
+                                <div class="card-body">
+                                    <div class="detail-label mb-2">Alasan Keluar</div>
+                                    <div class="detail-value">${data.alasan_keluar || '-'}</div>
                                 </div>
                             </div>
                         </div>
